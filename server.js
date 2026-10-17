@@ -1,20 +1,21 @@
 const express = require("express");
 const cors = require("cors");
 const OpenAI = require("openai");
+const path = require("path");
 require("dotenv").config();
 
 const app = express();
-const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
 
 const client = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
 app.get("/", (req, res) => {
-    res.send("AI Study Assistant Backend is running!");
+    res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.post("/api/ask", async (req, res) => {
@@ -50,10 +51,6 @@ app.post("/api/ask", async (req, res) => {
             error: "Something went wrong while contacting the AI.",
         });
     }
-});
-
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
 });
 
 function buildPrompt(mode, text) {
@@ -198,5 +195,8 @@ ${text}
 
     return prompts[mode] || null;
 }
+
+module.exports = app;
+
 
 

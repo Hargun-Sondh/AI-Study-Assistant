@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = "";
 
 const button = document.getElementById("askBtn");
 const input = document.getElementById("question");
